@@ -1,44 +1,24 @@
-package main;
-
-import java.awt.*;
 import javax.swing.*;
 import java.util.Arrays;
 
 public class Main {
-    private static final JFrame frame = new JFrame();
-    private static final JPanel panelNumbers = new JPanel();
-    private static final JPanel panelOpt = new JPanel();
-    private static final JTextField textField = new JTextField();
+
+    public static final JFrame frame = new JFrame();
+    public static final JPanel panelNumbers = new JPanel();
+    public static final JPanel panelOpt = new JPanel();
+    public static final JTextField textField = new JTextField();
     private static final String[] numberValues = {"7", "8", "9",
-            "4", "5", "6",
-            "1", "2","3",
-            "0", "00", "."};
-    private static final String[] operators = {"D", "C", "+", "-", "X", "/", "="};
+                                                    "4", "5", "6",
+                                                    "1", "2","3",
+                                                    "0", "00", "."};
+    public static String[] operators = {"D", "C", "+", "-", "X", "/", "="};
     private static Double num1 = null;
     private static Double num2 = null;
     private static String opt = null;
-
+//    private static String value = "";
+    public static JButton btn;
+    public static JButton btn1;
     public static void main(String[] args) {
-        //Frame
-        frame.setSize(420,420);
-        frame.setLayout(null);
-        frame.setResizable(false);
-        Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\hp\\Desktop\\Calculator\\Resource\\calculatorIcon.png");
-        frame.setIconImage(icon);
-        frame.getContentPane().setBackground(new Color(70, 70, 70));
-
-        //Panel for Buttons
-        frame.add(panelNumbers, BorderLayout.CENTER);
-        frame.add(panelOpt, BorderLayout.CENTER);
-
-        //Output textField
-        textField.setBounds(50, 25, 330, 50);
-        textField.setEditable(false);
-        textField.setForeground(Color.white);
-        textField.setBackground(new Color(97,97,97));
-        textField.setCaretColor(new Color(97,97,97));
-        textField.setHorizontalAlignment(JTextField.RIGHT);
-
         //Buttons for Numbers
         for (String numberValue : numberValues) {
             createNumberButton(numberValue);
@@ -49,28 +29,19 @@ public class Main {
             createOperatorButton(s);
         }
 
-        panelNumbers.setBounds(50, 100, 200, 200);
-        panelNumbers.setLayout(new GridLayout(4, 4, 8, 8));
-        panelNumbers.setBackground(new Color(70, 70, 70));
-        panelOpt.setBounds(258, 100, 120, 200);
-        panelOpt.setLayout(new GridLayout(4, 2, 8, 8));
-        panelOpt.setBackground(new Color(70, 70, 70));
-
-        frame.add(textField);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        new CalculatorGUI();
     }
 
     public static void createNumberButton(String value) {
-        JButton btn = new JButton(value);//creating instance of JButton
-        btn.addActionListener(e -> {
+        btn1 = new JButton(value);//creating instance of JButton
+        btn1.addActionListener(e -> {
             JButton button = (JButton) e.getSource();
-            if(opt == null) {
+            if (opt == null) {
                 String value1 = textField.getText().concat(button.getText());
                 textField.setText(value1);
                 num1 = Double.parseDouble(value1);
             } else {
-                if(num2 == null) {
+                if (num2 == null) {
                     textField.setText("");
                 }
                 String value1 = textField.getText().concat(button.getText());
@@ -78,24 +49,18 @@ public class Main {
                 num2 = Double.parseDouble(value1);
                 System.out.println("number");
                 System.out.println("------------");
-                System.out.println("num1: "+num1);
-                System.out.println("num2: "+num2);
-                System.out.println("opt: "+opt);
+                System.out.println("num1: " + num1);
+                System.out.println("num2: " + num2);
+                System.out.println("opt: " + opt);
                 System.out.println("------------");
             }
         });
-        btn.setFocusable(false);
-        btn.setBackground(new Color(82,76,87));
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false); // Remove the focus border
-        btn.setFont(new Font("Arial", Font.BOLD, 14));
-        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        panelNumbers.add(btn);//adding button in JFrame
+        CalculatorGUI.numbersGUI();
+        panelNumbers.add(btn1);//adding button in JFrame
     }
-
     public static void createOperatorButton(String value) {
-        JButton btn = new JButton(value);//creating instance of JButton
-        btn.setFocusable(false);
+        //creating instance of JButton
+        btn = new JButton(value);
         btn.addActionListener(e -> {
             String value1 = ((JButton) e.getSource()).getText();
             boolean isOperator = Arrays.stream(operators).toList().contains(value1);
@@ -148,11 +113,7 @@ public class Main {
             System.out.println("------------");
 
         });
-        btn.setBackground(new Color(240,130,60));
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false); // Remove the focus border
-        btn.setFont(new Font("Arial", Font.BOLD, 14));
-        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        CalculatorGUI.operatorGUI();
         panelOpt.add(btn);//adding button in JFrame
     }
 
